@@ -8,10 +8,10 @@
 header('Content-Type: text/html; charset=UTF-8');
 // http://quantum1.pendulum.com.mx/pendulum/matar_sleep.php
 //Variables
-//$ip = '10.73.98.116';
+//$ip = '10';
 $ip    = 'localhost';
 $usu   = 'rootito';
-$pass  = '5e5ABf4a5d973d';
+$pass  = '';
 $bd    = 'wf_workflow';
 $query = "SELECT * FROM INFORMATION_SCHEMA.PROCESSLIST WHERE ( COMMAND = 'Sleep' OR COMMAND = 'Query' ) AND TIME >= 20 AND ( INFO IS NULL OR INFO LIKE '%SELECT%' )";//Pruebo la Conexion
 
