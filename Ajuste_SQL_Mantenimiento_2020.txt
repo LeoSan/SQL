@@ -1,0 +1,75 @@
+
+
+
+ALTER TABLE ift_web.dbo.reclamaciones_mensajes_ift ALTER COLUMN mensaje VARCHAR(3000);
+
+
+
+CREATE VIEW [dbo].[view_inconformidad2]
+ AS SELECT reclamaciones.folio
+, reclamaciones.id_reclamacion
+, reclamaciones.fecha_reasignacion
+, reclamaciones.fecha_registro
+, reclamaciones.fecha_registro as fecha_reg
+, reclamaciones.fecha_registro as fecha_folio
+, reclamaciones.fecha_estatus
+, reclamaciones.id_forma_pago
+, reclamaciones.id_tipoplan
+, cat_entidades.id_entidadfederativa
+, cat_municipios.id_municipio
+, reclamaciones_datos_usuario.id_colonia
+, col.titulo as colonia
+, ift_web.dbo.fn_ConversionUTF8( reclamaciones.text_insatisfecho ) text_insatisfecho
+, ift_web.dbo.fn_ConversionUTF8( reclamaciones.resp_encuesta ) resp_encuesta
+, ift_web.dbo.fn_ConversionUTF8( reclamaciones.descripcion ) descripcion
+, cat_estatus.titulo as estatus
+, cat_tipo_reclamacion.titulo as motivo
+, cat_tipo_reclamacion.titulo as tipo_reclamacion
+, cstr.titulo as nom_sub_reclamacion
+, cat_servicios.titulo as tipo_servicio
+, cat_proveedores.titulo as proveedor
+, cat_proveedores.nombre_comercial
+, cat_proveedores.nombre_fiscal
+, cat_proveedores.ID_PROFECO
+, cat_proveedores.id_proveedor
+, usuarios.nombre
+, usuarios.apellido_materno
+, usuarios.apellido_paterno
+, CONCAT(reclamaciones_datos_usuario.nombre, ' ', reclamaciones_datos_usuario.apellido_paterno, ' ', reclamaciones_datos_usuario.apellido_materno ) as nombreUsuario
+, reclamaciones_datos_usuario.email as emailRegistro
+, reclamaciones_datos_usuario.tel_contacto as telefonoRegistro
+, usuarios.calle
+, usuarios.num_ext
+, usuarios.num_int
+, usuarios.cp
+, reclamaciones_datos_usuario.tel_contacto
+, reclamaciones_datos_usuario.tel_mensajes
+, reclamaciones_datos_usuario.id_compania
+, usuarios.email
+, usuarios.calle as calledos
+, ift_web.dbo.cat_municipios.titulo as municipio
+, ift_web.dbo.cat_entidades.titulo as estado
+, ift_web.dbo.reclamaciones.id_servicios_extra as servicio_extr
+, reclamaciones.numero_telefono_falla
+, reclamaciones.numero_telefonoocontrato
+, reclamaciones.marcatelefono
+, reclamaciones.modelotelefono
+, reclamaciones.numero_imei
+, reclamaciones.asesoria_profeco
+, cstr.id_subtipo_reclamacion
+, reclamaciones.id_estatus
+, reclamaciones.puntaje_encuestacalidad
+, reclamaciones.id_usuario
+FROM ift_web.dbo.reclamaciones
+INNER JOIN ift_web.dbo.cat_servicios ON reclamaciones.id_servicio = cat_servicios.id_servicio
+INNER JOIN ift_web.dbo.cat_tipo_reclamacion ON reclamaciones.id_tipo_reclamacion = cat_tipo_reclamacion.id_tipo_reclamacion
+INNER JOIN ift_web.dbo.reclamaciones_datos_usuario ON reclamaciones.id_datos_usuario = reclamaciones_datos_usuario.id_datos_usuario
+INNER JOIN ift_web.dbo.cat_proveedores ON reclamaciones.id_proveedor = cat_proveedores.id_proveedor
+INNER JOIN ift_web.dbo.cat_subtipo_reclamacion as cstr ON cstr.id_subtipo_reclamacion=reclamaciones.id_subtipo_reclamacion
+INNER JOIN ift_web.dbo.usuarios ON usuarios.id_usuario = reclamaciones.id_usuario
+INNER JOIN ift_web.dbo.cat_entidades ON ift_web.dbo.cat_entidades.id_entidadfederativa = ift_web.dbo.reclamaciones_datos_usuario.id_entidadfederativa
+INNER JOIN ift_web.dbo.cat_municipios ON ift_web.dbo.cat_municipios.id_municipio = ift_web.dbo.reclamaciones_datos_usuario.id_municipio
+INNER JOIN ift_web.dbo.cat_colonias as col ON col.id_colonia=reclamaciones_datos_usuario.id_colonia
+INNER JOIN ift_web.dbo.cat_estatus ON reclamaciones.id_estatus = cat_estatus.id_estatus WHERE reclamaciones.id_reclamacion > 0
+;
+GO
